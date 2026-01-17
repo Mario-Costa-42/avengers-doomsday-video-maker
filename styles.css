@@ -1,0 +1,142 @@
+/* Reset */
+@font-face {
+    font-family: 'AvengersFont';
+    src: url('/assets/fonts/AVENGEANCE\ HEROIC\ AVENGER\ BI.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Page */
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Text */
+.title {
+  color: #ffffff;
+  font-family: 'AvengersFont', sans-serif;
+  /* text-transform: uppercase; */
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  letter-spacing: 5px;
+  opacity: 0;
+  animation:
+    fadeIn 1.5s ease forwards,
+    exitRight 1.2s ease forwards;
+  animation-delay: 0.3s, 3.5s;
+  text-align: center;
+}
+
+/* Logo */
+.logo {
+  /* width: clamp(60px, 15vw, 100px); */
+  width: 80vw;
+  height: auto;
+  opacity: 0;
+  animation:
+    fadeIn 1.5s ease forwards,
+    exitUp 1.2s ease forwards;
+  animation-delay: 1s, 3.5s;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes exitRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(150px);
+  }
+}
+
+@keyframes exitUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-120px);
+  }
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 600px) {
+  @keyframes exitRight {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(80px);
+    }
+  }
+
+  @keyframes exitUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-80px);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* when the screen is bigger  */
+
+@media screen and (min-width: 570px) {
+  /* .title {
+    margin-top: 20px;
+  } */
+  .logo{
+    width: 456px;
+  }
+}
