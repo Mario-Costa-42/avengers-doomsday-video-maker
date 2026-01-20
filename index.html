@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- <img src="assets/Alogo.png" alt="Avengers: Doomsday Logo"> -->
-
     <div class="container">
         <h1 class="title">Will be in <br><br>
             Avengers: Doomsday</h1>
         <img src="assets/Alogo.png" alt="Logo" class="logo" />
     </div>
 </body>
+
+<script>
+    const logo = document.getElementsByClassName("logo");
+
+    logo[0].addEventListener("animationend", (event) => {
+    if (event.animationName === "exitUp") {
+        window.location.href = "upload.html";
+    }
+    });
+</script>
 </html>

@@ -1,0 +1,157 @@
+@font-face {
+  font-family: 'AvengersFont';
+  src: url('/assets/fonts/AVENGEANCE HEROIC AVENGER BI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+}
+
+/* Main container */
+.container {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: black;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  color: #ffffff;
+  font-family: 'AvengersFont', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  letter-spacing: 5px;
+  text-align: center;
+}
+
+/* Ad banner */
+.ad-banner {
+  height: 70px;
+  background: #eaeaea;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #666;
+}
+
+/* Upload box */
+.upload-box {
+  position: relative;
+  flex: 1;
+  border: 2px dashed #fffcfc;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#uploadHint{
+  color: white;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Placeholder */
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.upload-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* Preview image */
+#previewImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+/* Replace hint */
+.replace-hint {
+  position: absolute;
+  bottom: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.upload-box.has-image .replace-hint {
+  opacity: 1;
+}
+
+/* Name input */
+.name-input {
+  width: 100%;
+  height: 52px;
+  border-radius: 26px;
+  border: 1.5px solid #ccc;
+  padding: 0 20px;
+  font-size: 16px;
+  outline: none;
+}
+
+.name-input:focus {
+  border-color: #333;
+}
+
+/* Generate button */
+button {
+  height: 54px;
+  border-radius: 28px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button:enabled {
+  opacity: 1;
+  cursor: pointer;
+}
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Edit Upload</title>
+  <link rel="stylesheet" href="upload.css" />
+</head>
+<body>
+
+  <main class="container">
+
+    <!-- Ad Placeholder -->
+    <div class="ad-banner">
+      ANÚNCIO
+    </div>
+
+    <h1 class="title">Add a new character to Avengers: Doomsday</h1>
+
+    <!-- Upload Area -->
+    <label class="upload-box">
+      <input type="file" id="imageInput" accept="image/*" hidden />
+
+      <!-- Placeholder -->
+      <div class="upload-placeholder">
+        <div class="upload-icon">↑</div>
+        <span class="upload-text">Upload photo</span>
+        <p id="uploadHint">Images submitted in the 16:9 format are strongly favored.</p>
+      </div>
+
+      <!-- Image preview -->
+      <img id="previewImage" alt="Preview" />
+
+      <!-- Replace hint -->
+      <div class="replace-hint">Tap to replace</div>
+    </label>
+
+    <!-- Name Input -->
+    <input
+      type="text"
+      id="nameInput"
+      class="name-input"
+      placeholder="Nome"
+      maxlength="30"
+    />
+
+    <!-- Generate Button -->
+    <button id="generateBtn" disabled>
+      Generate Video
+    </button>
+
+  </main>
+
+  <script src="upload.js"></script>
+</body>
+</html>
+
