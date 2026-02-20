@@ -2,21 +2,6 @@ body {
   margin: 0;
   background: black;
   color: white;
-  /* display: flex;
-  justify-content: center;
-  align-items: center;  */
-}
-
-.ad-banner {
-  height: 70px;
-  background: #eaeaea;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #666;
-  margin-top: 20vh;
 }
 
 .loading-container {

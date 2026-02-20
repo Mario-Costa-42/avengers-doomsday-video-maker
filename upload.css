@@ -37,17 +37,6 @@ body {
   text-align: center;
 }
 
-/* Ad banner */
-.ad-banner {
-  height: 70px;
-  background: #eaeaea;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #666;
-}
 
 /* Upload box */
 .upload-box {
