@@ -180,6 +180,10 @@ function drawName(alpha) {
 function showActions(url) {
   const actions = document.getElementById("actions");
   actions.hidden = false;
+  const button = document.getElementsByClassName("button");
+  button[0].style.display = "flex";
+  // const icon = document.getElementsByClassName("icon");
+  // icon.hidden = false;
 
   const saveBtn = document.createElement("a");
   saveBtn.href = url;
