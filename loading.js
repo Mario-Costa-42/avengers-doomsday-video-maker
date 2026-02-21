@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const video = document.getElementById("baseVideo");
 const image = new Image();
+const progressBar = document.getElementById("progressBar");
 
 canvas.width = 1920;
 canvas.height = 1080;
@@ -30,7 +31,6 @@ const TEXT_DURATION = 8;
 const FADE_DURATION = 3;
 
 // ─────────────────────────────
-let startTime;
 let recorder;
 let chunks = [];
 let audioContext;
@@ -46,24 +46,22 @@ Promise.all([
 ]).then(startGeneration);
 
 // ─────────────────────────────
-// SAFE START (PRODUCTION)
+// START GENERATION
 // ─────────────────────────────
 async function startGeneration() {
-  // Audio must start AFTER user interaction (done on previous page)
+  chunks = [];
+
   audioContext = new AudioContext();
   await audioContext.resume();
 
-  // Audio setup
   const source = audioContext.createMediaElementSource(video);
   const destination = audioContext.createMediaStreamDestination();
 
   source.connect(destination);
   source.connect(audioContext.destination);
 
-  // Canvas video
   const canvasStream = canvas.captureStream(30);
 
-  // Merge video + audio
   const combinedStream = new MediaStream([
     ...canvasStream.getVideoTracks(),
     ...destination.stream.getAudioTracks()
@@ -73,10 +71,25 @@ async function startGeneration() {
     mimeType: "video/webm;codecs=vp9,opus"
   });
 
-  recorder.ondataavailable = e => chunks.push(e.data);
+  recorder.ondataavailable = e => {
+    if (e.data && e.data.size > 0) {
+      chunks.push(e.data);
+    }
+  };
 
   recorder.onstop = () => {
+    if (!chunks.length) {
+      alert("Rendering failed. Please try again.");
+      return;
+    }
+
     const blob = new Blob(chunks, { type: "video/webm" });
+
+    if (blob.size === 0) {
+      alert("Video encoding failed.");
+      return;
+    }
+
     const url = URL.createObjectURL(blob);
     showActions(url);
   };
@@ -84,25 +97,23 @@ async function startGeneration() {
   recorder.start();
   video.play();
 
-  startTime = performance.now();
-  render();
+  video.requestVideoFrameCallback(render);
 }
 
 // ─────────────────────────────
-// MAIN RENDER LOOP (UNCHANGED)
+// FRAME-SYNC RENDER LOOP
 // ─────────────────────────────
-function render() {
-  const now = performance.now();
-  const elapsed = (now - startTime) / 1000;
+function render(now, metadata) {
+  const elapsed = metadata.mediaTime;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Phase A: Image
+  // IMAGE PHASE
   if (elapsed < IMAGE_DURATION) {
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
   }
 
-  // Phase B: Video
+  // VIDEO PHASE
   else {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -126,15 +137,17 @@ function render() {
     }
   }
 
-  if (!video.ended) {
-    requestAnimationFrame(render);
-  } else {
-    recorder.stop();
+  // UPDATE PROGRESS BAR
+  if (video.duration) {
+    const progress = (video.currentTime / video.duration) * 100;
+    progressBar.style.width = progress + "%";
   }
+
+  video.requestVideoFrameCallback(render);
 }
 
 // ─────────────────────────────
-// TEXT DRAWING (UNCHANGED)
+// TEXT DRAWING
 // ─────────────────────────────
 function drawName(alpha) {
   const len = userName.length;
@@ -175,15 +188,20 @@ function drawName(alpha) {
 }
 
 // ─────────────────────────────
-// DOWNLOAD / SHARE (UNCHANGED)
+// DOWNLOAD / SHARE
 // ─────────────────────────────
 function showActions(url) {
   const actions = document.getElementById("actions");
   actions.hidden = false;
+
+  document.querySelector(".loading-title").textContent =
+    "Your Trailer is Ready!";
+  document.querySelector(".loading-text").textContent =
+    "You can download or share it!";
+  document.querySelector(".loader").style.display = "none";
+
   const button = document.getElementsByClassName("button");
   button[0].style.display = "flex";
-  // const icon = document.getElementsByClassName("icon");
-  // icon.hidden = false;
 
   const saveBtn = document.createElement("a");
   saveBtn.href = url;
@@ -194,12 +212,6 @@ function showActions(url) {
   const shareBtn = document.createElement("button");
   shareBtn.className = "action-btn action-share";
   shareBtn.textContent = "SHARE";
-
-  document.querySelector(".loading-title").textContent =
-    "Your Trailer is Ready!";
-  document.querySelector(".loading-text").textContent =
-    "You can download or share it!";
-  document.querySelector(".loader").style.display = "none";
 
   shareBtn.onclick = async () => {
     const shareData = {
@@ -219,3 +231,14 @@ function showActions(url) {
   actions.appendChild(saveBtn);
   actions.appendChild(shareBtn);
 }
+
+video.addEventListener("ended", () => {
+  progressBar.style.width = "100%";
+
+  // Give encoder a moment to flush
+  setTimeout(() => {
+    if (recorder && recorder.state === "recording") {
+      recorder.stop();
+    }
+  }, 200);
+});
